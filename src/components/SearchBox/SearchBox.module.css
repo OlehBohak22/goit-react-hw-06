@@ -1,0 +1,17 @@
+.searchBox {
+  margin-bottom: 2vw;
+
+  label {
+    display: block;
+    margin-bottom: 0.5vw;
+    font-weight: 500;
+  }
+
+  input {
+    display: block;
+    padding: 0.5vw;
+    width: 100%;
+    border-radius: 0.5vw;
+    border: 0.05vw solid black;
+  }
+}
