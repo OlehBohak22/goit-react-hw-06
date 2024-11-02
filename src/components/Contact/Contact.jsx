@@ -6,13 +6,13 @@ export default function Contact({ id, name, number, onDelete }) {
       <div>
         <p>
           <svg>
-            <use href="/public/assets/icons.svg#icon-user"></use>
+            <use href="assets/icons.svg#icon-user"></use>
           </svg>
           {name}
         </p>
         <p>
           <svg>
-            <use href="/public/assets/icons.svg#icon-phone"></use>
+            <use href="assets/icons.svg#icon-phone"></use>
           </svg>
           {number}
         </p>
