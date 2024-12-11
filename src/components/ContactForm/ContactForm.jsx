@@ -1,67 +1,43 @@
-import { Field, Form, Formik, ErrorMessage } from "formik";
-import { nanoid } from "nanoid";
-import { useId } from "react";
-import * as Yup from "yup";
-import s from "./ContactForm.module.css";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addContact, selectContacts } from "../../redux/contactSlice";
 
-const initialValues = { name: "", number: "" };
+const ContactForm = () => {
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
+  const contacts = useSelector(selectContacts);
+  const dispatch = useDispatch();
 
-const FeedbackSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(3, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  number: Yup.string()
-    .min(3, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-});
-
-export default function ContactForm({ onAdd }) {
-  const handleSubmit = (values, actions) => {
-    onAdd({
-      name: values.name,
-      number: values.number,
-      id: nanoid(),
-    });
-    actions.resetForm();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (contacts.some((contact) => contact.name === name)) {
+      alert(`${name} is already in contacts.`);
+      return;
+    }
+    dispatch(addContact({ id: Date.now().toString(), name, number }));
+    setName("");
+    setNumber("");
   };
 
-  const nameId = useId();
-  const numberId = useId();
-
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validationSchema={FeedbackSchema}
-    >
-      <Form className={s.contactForm}>
-        <div className={s.inputContainer}>
-          <div className={s.labelContainer}>
-            <label htmlFor={nameId}>Name</label>
-            <Field
-              id={nameId}
-              name="name"
-              type="text"
-              placeholder="Enter your name"
-            />
-            <ErrorMessage name="name" component="p" />
-          </div>
-
-          <div className={s.labelContainer}>
-            <label htmlFor={numberId}>Number</label>
-            <Field
-              id={numberId}
-              name="number"
-              type="text"
-              placeholder="Enter your number"
-            />
-            <ErrorMessage name="number" component="p" />
-          </div>
-        </div>
-        <button type="submit">Add contact</button>
-      </Form>
-    </Formik>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Name"
+        required
+      />
+      <input
+        type="text"
+        value={number}
+        onChange={(e) => setNumber(e.target.value)}
+        placeholder="Number"
+        required
+      />
+      <button type="submit">Add Contact</button>
+    </form>
   );
-}
+};
+
+export default ContactForm;
