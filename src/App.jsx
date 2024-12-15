@@ -1,17 +1,26 @@
-import "./App.css";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchContacts } from "./redux/contactOps";
 import ContactList from "./components/ContactList/ContactList";
-import SearchBox from "./components/SearchBox/SearchBox";
 import ContactForm from "./components/ContactForm/ContactForm";
+import SearchBox from "./components/SearchBox/SearchBox";
 
-function App() {
+const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
   return (
-    <div className="container">
+    <div>
       <h1>Phonebook</h1>
       <ContactForm />
       <SearchBox />
+      <h2>Contacts</h2>
       <ContactList />
     </div>
   );
-}
+};
 
 export default App;
